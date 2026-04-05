@@ -7,6 +7,18 @@ import { dressingItems } from "./dressing_smiski";
 import { workItems } from "./work_smiski";
 import { museumItems } from "./museum_smiski";
 import { cheerItems } from "./cheer_smiski";
+import { bathItems } from "./bath_smiski";
+import { livingItems } from "./living_smiski";
+import { yogaItems } from "./yoga_smiski";
+import { bedItems } from "./bed_smiski";
+import { toiletItems } from "./toilet_smiski";
+import { series1Items } from "./series1_smiski";
+import { series2Items } from "./series2_smiski";
+import { series3Items } from "./series3_smiski";
+import { series4Items } from "./series4_smiski";
+import { strapSeries1Items } from "./series1_strap";
+import { strapSeries2Items } from "./series2_strap";
+import { strapSeries3Items } from "./series3_strap";
 
 export type SmiskiItem = {
   id: string;
@@ -30,6 +42,18 @@ export const SMISKI_ITEMS: SmiskiItem[] = [
   ...workItems,
   ...museumItems,
   ...cheerItems,
+  ...bathItems,
+  ...livingItems,
+  ...yogaItems,
+  ...bedItems,
+  ...toiletItems,
+  ...series1Items,
+  ...series2Items,
+  ...series3Items,
+  ...series4Items,
+  ...strapSeries1Items,
+  ...strapSeries2Items,
+  ...strapSeries3Items,
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {
