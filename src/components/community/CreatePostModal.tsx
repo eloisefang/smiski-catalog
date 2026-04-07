@@ -6,18 +6,10 @@ import {
   communityInputClass,
   communityMutedLabelClass,
   communityPrimaryButtonClass,
-  communitySelectClass,
 } from "@/src/lib/community-ui";
 import { ImageUpload } from "@/src/components/community/ImageUpload";
 
 export type CreatePayload =
-  | {
-      kind: "collection";
-      title: string;
-      description: string;
-      series?: string;
-      files: File[];
-    }
   | {
       kind: "showcase";
       title: string;
@@ -30,30 +22,35 @@ export type CreatePayload =
       lookingFor: string;
       offering: string;
       description: string;
+      location: string;
+      series?: string;
       file?: File;
     };
 
 type Props = {
-  seriesOptions: string[];
   onClose: () => void;
-  mode: "collection" | "trade" | "showcase";
-  onSubmit: (payload: CreatePayload) => void;
+  mode: "trade" | "showcase";
+  seriesOptions: string[];
+  onSubmit: (payload: CreatePayload) => Promise<{ ok: true } | { ok: false; error: string }>;
 };
 
-export function CreatePostModal({ seriesOptions, onClose, mode, onSubmit }: Props) {
+export function CreatePostModal({ onClose, mode, seriesOptions, onSubmit }: Props) {
   const titleId = useId();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [series, setSeries] = useState<string>("");
   const [lookingFor, setLookingFor] = useState("");
   const [offering, setOffering] = useState("");
   const [tradeDesc, setTradeDesc] = useState("");
+  const [tradeLocation, setTradeLocation] = useState("");
+  const [series, setSeries] = useState<string>("");
 
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [tradeFile, setTradeFile] = useState<File | null>(null);
   const [tradePreview, setTradePreview] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const prevOverflow = document.body.style.overflow;
@@ -72,6 +69,7 @@ export function CreatePostModal({ seriesOptions, onClose, mode, onSubmit }: Prop
   }, [onClose]);
 
   function addFiles(next: File[]) {
+    if (mode === "showcase" && submitError) setSubmitError("");
     setFiles((prev) => {
       const merged = [...prev, ...next];
       setPreviews((old) => {
@@ -115,41 +113,49 @@ export function CreatePostModal({ seriesOptions, onClose, mode, onSubmit }: Prop
     });
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (isSubmitting) return;
+    setSubmitError("");
     if (mode === "trade") {
       if (!lookingFor.trim() || !offering.trim()) return;
-      onSubmit({
+      setIsSubmitting(true);
+      const result = await onSubmit({
         kind: "trade",
         lookingFor: lookingFor.trim(),
         offering: offering.trim(),
         description: tradeDesc.trim(),
+        location: tradeLocation.trim(),
+        series: series.trim() ? series : undefined,
         file: tradeFile ?? undefined,
       });
+      setIsSubmitting(false);
+      if (!result.ok) {
+        setSubmitError(result.error);
+        return;
+      }
       onClose();
       return;
     }
 
     if (!title.trim() || !description.trim()) return;
-    if (files.length === 0) return;
+    if (files.length === 0) {
+      setSubmitError("Please upload at least one image for a showcase post.");
+      return;
+    }
 
-    const s = series === "" || series === "all" ? undefined : series;
-    if (mode === "collection") {
-      onSubmit({
-        kind: "collection",
-        title: title.trim(),
-        description: description.trim(),
-        series: s,
-        files: [...files],
-      });
-    } else {
-      onSubmit({
-        kind: "showcase",
-        title: title.trim(),
-        description: description.trim(),
-        series: s,
-        files: [...files],
-      });
+    setIsSubmitting(true);
+    const result = await onSubmit({
+      kind: "showcase",
+      title: title.trim(),
+      description: description.trim(),
+      series: series.trim() ? series : undefined,
+      files: [...files],
+    });
+    setIsSubmitting(false);
+    if (!result.ok) {
+      setSubmitError(result.error);
+      return;
     }
     onClose();
   }
@@ -157,9 +163,7 @@ export function CreatePostModal({ seriesOptions, onClose, mode, onSubmit }: Prop
   const heading =
     mode === "trade"
       ? "New trade post"
-      : mode === "showcase"
-        ? "New showcase"
-        : "New collection post";
+      : "New showcase";
 
   return (
     <div
@@ -189,8 +193,28 @@ export function CreatePostModal({ seriesOptions, onClose, mode, onSubmit }: Prop
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 px-5 py-5 sm:px-6 sm:py-6">
+          {submitError && (
+            <p className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm text-rose-700">
+              {submitError}
+            </p>
+          )}
           {mode === "trade" ? (
             <>
+              <label className="flex flex-col gap-1.5">
+                <span className={communityMutedLabelClass}>Series (optional)</span>
+                <select
+                  value={series}
+                  onChange={(e) => setSeries(e.target.value)}
+                  className={communityInputClass}
+                >
+                  <option value="">No series</option>
+                  {seriesOptions.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </label>
               <label className="flex flex-col gap-1.5">
                 <span className={communityMutedLabelClass}>Looking for</span>
                 <input
@@ -211,6 +235,16 @@ export function CreatePostModal({ seriesOptions, onClose, mode, onSubmit }: Prop
                   placeholder="What you’ll trade"
                   required
                   maxLength={200}
+                />
+              </label>
+              <label className="flex flex-col gap-1.5">
+                <span className={communityMutedLabelClass}>Location (optional)</span>
+                <input
+                  value={tradeLocation}
+                  onChange={(e) => setTradeLocation(e.target.value)}
+                  className={communityInputClass}
+                  placeholder="City, State / Country"
+                  maxLength={120}
                 />
               </label>
               <label className="flex flex-col gap-1.5">
@@ -272,9 +306,9 @@ export function CreatePostModal({ seriesOptions, onClose, mode, onSubmit }: Prop
                 <select
                   value={series}
                   onChange={(e) => setSeries(e.target.value)}
-                  className={communitySelectClass}
+                  className={communityInputClass}
                 >
-                  <option value="">No tag</option>
+                  <option value="">No series</option>
                   {seriesOptions.map((s) => (
                     <option key={s} value={s}>
                       {s}
@@ -302,7 +336,7 @@ export function CreatePostModal({ seriesOptions, onClose, mode, onSubmit }: Prop
                   maxFiles={6}
                 />
                 <p className="mt-2 text-xs text-stone-500">
-                  Add at least one image for {mode === "showcase" ? "showcase" : "collection"} posts.
+                  Add at least one image for showcase posts.
                 </p>
               </div>
             </>
@@ -312,8 +346,8 @@ export function CreatePostModal({ seriesOptions, onClose, mode, onSubmit }: Prop
             <button type="button" className={communityGhostButtonClass} onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className={communityPrimaryButtonClass}>
-              Publish
+            <button type="submit" className={communityPrimaryButtonClass} disabled={isSubmitting}>
+              {isSubmitting ? "Publishing..." : "Publish"}
             </button>
           </div>
         </form>

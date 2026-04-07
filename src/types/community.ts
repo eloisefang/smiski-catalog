@@ -1,4 +1,4 @@
-export type CommunityPostType = "collection" | "trade" | "showcase";
+export type CommunityPostType = "trade" | "showcase";
 
 export type CommunityComment = {
   id: string;
@@ -9,22 +9,30 @@ export type CommunityComment = {
 
 export type CommunityPost = {
   id: string;
+  /** Owner — from `community_posts.user_id` */
+  userId: string;
   type: CommunityPostType;
   title: string;
   description: string;
   images: string[];
   createdAt: string;
-  /** Optional tag for filtering (e.g. series name) */
   series?: string;
   likes?: number;
   comments?: CommunityComment[];
 };
 
 export type TradePost = {
+  /** `trade_posts.id` */
   id: string;
+  /** Parent `community_posts.id` — use for delete/report/like/comments */
+  communityPostId: string;
+  /** Owner — from parent `community_posts.user_id` */
+  userId: string;
   lookingFor: string;
   offering: string;
   description?: string;
   image?: string;
   createdAt: string;
+  location?: string;
+  series?: string;
 };

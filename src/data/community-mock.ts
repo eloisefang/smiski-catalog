@@ -3,10 +3,13 @@ import type { CommunityPost, TradePost } from "@/src/types/community";
 const ph = (w: number, h: number, text: string) =>
   `https://placehold.co/${w}x${h}/E2F0D9/3E9A0B/png?text=${encodeURIComponent(text)}`;
 
+const MOCK_USER = "00000000-0000-0000-0000-000000000001";
+
 export const MOCK_COMMUNITY_POSTS: CommunityPost[] = [
   {
     id: "cp-1",
-    type: "collection",
+    userId: MOCK_USER,
+    type: "showcase",
     title: "My Bedroom Setup",
     description:
       "Soft lighting and a tiny shelf for my glow-in-the-dark friends. They keep me company while I read.",
@@ -25,7 +28,8 @@ export const MOCK_COMMUNITY_POSTS: CommunityPost[] = [
   },
   {
     id: "cp-2",
-    type: "collection",
+    userId: MOCK_USER,
+    type: "showcase",
     title: "Desk Buddies While I Work",
     description:
       "A small forest next to my monitor. Productivity unclear, morale high.",
@@ -36,6 +40,7 @@ export const MOCK_COMMUNITY_POSTS: CommunityPost[] = [
   },
   {
     id: "cp-3",
+    userId: MOCK_USER,
     type: "showcase",
     title: "Bathroom Shelf Glow",
     description: "Minimal, calm, slightly silly.",
@@ -46,6 +51,7 @@ export const MOCK_COMMUNITY_POSTS: CommunityPost[] = [
   },
   {
     id: "cp-4",
+    userId: MOCK_USER,
     type: "showcase",
     title: "Windowsill Garden",
     description: "Sunlight + tiny poses = instant serotonin.",
@@ -59,6 +65,8 @@ export const MOCK_COMMUNITY_POSTS: CommunityPost[] = [
 export const MOCK_TRADE_POSTS: TradePost[] = [
   {
     id: "tp-1",
+    communityPostId: "tcp-1",
+    userId: MOCK_USER,
     lookingFor: "Secret — Bath Series",
     offering: "Duplicate Yoga (Lotus)",
     description: "Local meetup preferred; ships within US.",
@@ -67,12 +75,16 @@ export const MOCK_TRADE_POSTS: TradePost[] = [
   },
   {
     id: "tp-2",
+    communityPostId: "tcp-2",
+    userId: MOCK_USER,
     lookingFor: "Hippers — Dressing",
     offering: "Series 3 Strap (unused)",
     createdAt: "2026-04-02T18:30:00.000Z",
   },
   {
     id: "tp-3",
+    communityPostId: "tcp-3",
+    userId: MOCK_USER,
     lookingFor: "Moving — Box peeking",
     offering: "Cheer duplicate + small add",
     description: "Happy to swap photos first.",

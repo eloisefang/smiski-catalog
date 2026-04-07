@@ -176,15 +176,6 @@ export function CatalogClient({
         className={filterSectionClass}
         aria-label="Search and filters"
       >
-        <div className="mb-8 flex flex-col gap-2 border-b border-smiski-light/80 pb-6">
-          <h2 className="text-lg font-semibold tracking-tight text-smiski-dark">
-            Refine collection
-          </h2>
-          <p className="text-sm text-stone-500">
-            Matching updates instantly in your browser.
-          </p>
-        </div>
-
         <div className="flex flex-col gap-7">
           <label className="flex flex-col gap-2.5">
             <FieldLabel>Search</FieldLabel>

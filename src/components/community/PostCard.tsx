@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import type { CommunityComment, CommunityPost } from "@/src/types/community";
 import {
@@ -22,6 +23,11 @@ function formatPosted(iso: string) {
   }
 }
 
+function creatorLabel(userId: string, currentUserId: string | null) {
+  if (currentUserId && userId === currentUserId) return "You";
+  return `User-${userId.slice(0, 6)}`;
+}
+
 type Props = {
   post: CommunityPost;
   variant: "grid" | "masonry";
@@ -30,6 +36,10 @@ type Props = {
   onToggleLike: () => void;
   comments: CommunityComment[];
   onAddComment: (text: string) => void;
+  currentUserId: string | null;
+  onDeletePost?: (communityPostId: string) => void;
+  onReportPost?: (communityPostId: string, title: string) => void;
+  isDeleting?: boolean;
 };
 
 export function PostCard({
@@ -40,12 +50,20 @@ export function PostCard({
   onToggleLike,
   comments,
   onAddComment,
+  currentUserId,
+  onDeletePost,
+  onReportPost,
+  isDeleting,
 }: Props) {
   const [openComments, setOpenComments] = useState(false);
   const [draft, setDraft] = useState("");
 
   const cover = post.images[0];
   const isMasonry = variant === "masonry";
+  const isOwner = currentUserId !== null && post.userId === currentUserId;
+  const canReport =
+    currentUserId !== null && !isOwner && onReportPost !== undefined;
+  const detailHref = `/community/${post.id}`;
 
   function submitComment(e: React.FormEvent) {
     e.preventDefault();
@@ -62,7 +80,9 @@ export function PostCard({
       }`}
     >
       {cover && (
-        <div
+        <Link
+          href={detailHref}
+          aria-label={`View post: ${post.title}`}
           className={`relative w-full overflow-hidden bg-gradient-to-br from-stone-100 to-smiski-light/35 ${
             isMasonry ? "max-h-[min(70vh,520px)] min-h-[200px]" : "aspect-[4/3]"
           }`}
@@ -71,7 +91,7 @@ export function PostCard({
             src={cover}
             alt=""
             fill
-            unoptimized={cover.startsWith("blob:")}
+            unoptimized
             className={`object-cover transition duration-500 ease-out ${
               isMasonry ? "object-center" : ""
             }`}
@@ -81,29 +101,58 @@ export function PostCard({
             className="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-900/25 via-transparent to-white/20"
             aria-hidden
           />
-          {post.series && (
-            <span className="absolute left-3 top-3 rounded-full border border-white/80 bg-white/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-smiski-dark shadow-sm">
-              {post.series}
-            </span>
-          )}
-        </div>
+          {/* series tag removed (no `community_posts.series` column in current schema) */}
+        </Link>
       )}
 
       <div className={`flex flex-1 flex-col gap-3 ${isMasonry ? "p-4" : "p-4 sm:p-5"}`}>
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <h3
-              className={`font-semibold tracking-tight text-stone-800 ${
-                isMasonry ? "text-base leading-snug" : "text-lg leading-snug sm:text-[1.05rem]"
-              }`}
-            >
-              {post.title}
-            </h3>
+            <Link href={detailHref} className="group focus:outline-none">
+              <h3
+                className={`font-semibold tracking-tight text-stone-800 transition group-hover:text-smiski-dark ${
+                  isMasonry
+                    ? "text-base leading-snug"
+                    : "text-lg leading-snug sm:text-[1.05rem]"
+                }`}
+              >
+                {post.title}
+              </h3>
+            </Link>
             <p className="mt-1 text-xs font-medium text-stone-500">
-              {formatPosted(post.createdAt)}
+              {formatPosted(post.createdAt)} · Posted by{" "}
+              <span className="font-semibold text-stone-700">
+                {creatorLabel(post.userId, currentUserId)}
+              </span>
             </p>
+            {post.series ? (
+              <p className="mt-1">
+                <span className="rounded-full border border-smiski-primary/25 bg-smiski-light/60 px-2 py-0.5 text-[10px] font-semibold text-smiski-dark">
+                  {post.series}
+                </span>
+              </p>
+            ) : null}
           </div>
-          <div className="flex shrink-0 items-center gap-1">
+          <div className="flex shrink-0 flex-wrap items-center justify-end gap-1">
+            {isOwner && onDeletePost && (
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => onDeletePost(post.id)}
+                className="rounded-full border border-rose-200 bg-white px-2.5 py-1 text-xs font-semibold text-rose-700 transition hover:bg-rose-50 disabled:opacity-50"
+              >
+                {isDeleting ? "Deleting…" : "Delete"}
+              </button>
+            )}
+            {canReport && (
+              <button
+                type="button"
+                onClick={() => onReportPost(post.id, post.title)}
+                className="rounded-full border border-stone-200 bg-white px-2.5 py-1 text-xs font-semibold text-stone-600 transition hover:bg-stone-50"
+              >
+                Report
+              </button>
+            )}
             <button
               type="button"
               onClick={onToggleLike}
@@ -128,6 +177,13 @@ export function PostCard({
           {post.description}
         </p>
 
+        <Link
+          href={detailHref}
+          className="text-xs font-semibold text-smiski-dark underline-offset-4 hover:underline"
+        >
+          View details →
+        </Link>
+
         {post.images.length > 1 && (
           <ul className="flex gap-2 overflow-x-auto pb-1 pt-1 [scrollbar-width:thin]">
             {post.images.slice(1).map((src, i) => (
@@ -139,7 +195,7 @@ export function PostCard({
                   src={src}
                   alt=""
                   fill
-                  unoptimized={src.startsWith("blob:")}
+                  unoptimized
                   className="object-cover"
                   sizes="64px"
                 />
