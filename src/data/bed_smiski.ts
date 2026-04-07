@@ -67,6 +67,17 @@ export const bedItems: SmiskiItem[] = [
     description:
       "SMISKI can’t seem to get comfortable. He keeps tossing and turning.",
   },
+  {
+    id: "bed07",
+    name: "SecretSMISKI",
+    series: "Bed Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/bed_series/img_bed07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

@@ -67,6 +67,17 @@ export const sundayItems: SmiskiItem[] = [
     description:
       "SMISKI loves flowers!! Did a sprout grow from SMISKI’s head because they watered the plants too much?",
   },  
+  {
+    id: "sunday07",
+    name: "SecretSMISKI",
+    series: "Sunday Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/sunday_series/img_sunday07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

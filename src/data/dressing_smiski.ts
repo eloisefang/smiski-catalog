@@ -67,6 +67,17 @@ export const dressingItems: SmiskiItem[] = [
     description:
       "SMISKI is trying on tight pants. He’s desperately trying to get them on!",
   },  
+  {
+    id: "dressing07",
+    name: "SecretSMISKI",
+    series: "Dressing Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/dressing_series/img_dressing07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

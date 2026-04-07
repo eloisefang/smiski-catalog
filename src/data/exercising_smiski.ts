@@ -67,6 +67,17 @@ export const exercisingItems: SmiskiItem[] = [
     description:
       "SMISKI is doing stretches. Stretching is very important before exercise!",
   },  
+  {
+    id: "exercising07",
+    name: "SecretSMISKI",
+    series: "Exercising Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/exercising_series/img_exercising07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

@@ -67,4 +67,15 @@ export const museumItems: SmiskiItem[] = [
     description:
       "A quiet SMISKI poses like a masterpiece, simple yet timeless.",
   },
+  {
+    id: "museum07",
+    name: "SecretSMISKI",
+    series: "Museum Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/museum_series/img_museum07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];

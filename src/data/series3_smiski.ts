@@ -67,6 +67,17 @@ export const series3Items: SmiskiItem[] = [
     description:
       "Always found doing a handstand against the wall. A true balance master.",
   },
+  {
+    id: "series307",
+    name: "SecretSMISKI",
+    series: "Series 3",
+    type: "blind_box",
+    isSecret: true,
+    image: "/series_3/img_series307.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

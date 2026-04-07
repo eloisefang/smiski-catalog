@@ -67,6 +67,17 @@ export const movingItems: SmiskiItem[] = [
     description:
       "SMISKI trips and falls with his package. Is the package damaged?",
   },
+  {
+    id: "moving07",
+    name: "SecretSMISKI",
+    series: "Moving Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/moving_series/img_moving07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

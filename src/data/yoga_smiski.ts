@@ -67,6 +67,17 @@ export const yogaItems: SmiskiItem[] = [
     description:
       "SMISKI is holding a ship pose. His core is definitely feeling the burn!",
   },
+  {
+    id: "yoga07",
+    name: "SecretSMISKI",
+    series: "Yoga Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/yoga_series/img_yoga07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

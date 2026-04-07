@@ -67,6 +67,17 @@ export const bathItems: SmiskiItem[] = [
     description:
       "SMISKI peeks carefully from the corner of the bathroom.",
   },
+  {
+    id: "bath07",
+    name: "SecretSMISKI",
+    series: "Bath Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/bath_series/img_bath07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

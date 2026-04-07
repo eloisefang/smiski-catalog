@@ -67,6 +67,17 @@ export const series1Items: SmiskiItem[] = [
     description:
       "Always hunched over and peeking in from the corner. Needs to gather up courage before approaching anything.",
   },
+  {
+    id: "series107",
+    name: "SecretSMISKI",
+    series: "Series 1",
+    type: "blind_box",
+    isSecret: true,
+    image: "/series_1/img_series107.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

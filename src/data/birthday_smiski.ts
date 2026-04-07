@@ -72,7 +72,19 @@ export const birthdayItems: SmiskiItem[] = [
     tags: ["birthday", "cake", "eat"],
     description:
       "SMISKI is tasting a birthday cake. Oh no … they are getting full and can’t eat any more.",
-  },];
+  },
+  {
+    id: "birthday07",
+    name: "SecretSMISKI",
+    series: "Birthday Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/birthday_series/img_birthday07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
+];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {
   return birthdayItems.find((item) => item.id === id);

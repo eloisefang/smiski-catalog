@@ -67,6 +67,17 @@ export const workItems: SmiskiItem[] = [
     description:
       "SMISKI are deliberating in the meeting. They think that three heads are better than one!",
   },  
+  {
+    id: "work07",
+    name: "SecretSMISKI",
+    series: "Work Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/work_series/img_work07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

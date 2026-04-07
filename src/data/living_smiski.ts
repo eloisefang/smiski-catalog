@@ -67,6 +67,17 @@ export const livingItems: SmiskiItem[] = [
     description:
       "SMISKI is lifting something heavy. He’s trying his best!",
   },
+  {
+    id: "living07",
+    name: "SecretSMISKI",
+    series: "Living Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/living_series/img_living07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

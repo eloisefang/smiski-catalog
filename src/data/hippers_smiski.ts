@@ -67,6 +67,17 @@ export const hippersItems: SmiskiItem[] = [
     description:
       "SMISKI loves thrills. Be careful not to fall off.",
   },  
+  {
+    id: "hippers07",
+    name: "SecretSMISKI",
+    series: "Hippers Series",
+    type: "hipper",
+    isSecret: true,
+    image: "/hippers_series/img_hippers07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

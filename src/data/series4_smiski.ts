@@ -67,6 +67,17 @@ export const series4Items: SmiskiItem[] = [
     description:
       "A SMISKI that is defeated because it cannot find any favorite corner.",
   },
+  {
+    id: "series407",
+    name: "SecretSMISKI",
+    series: "Series 4",
+    type: "blind_box",
+    isSecret: true,
+    image: "/series_4/img_series407.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

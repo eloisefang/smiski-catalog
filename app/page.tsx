@@ -14,6 +14,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const series = getSmiskiSeries();
+  console.log(SMISKI_ITEMS);
   const supabase = await createClient();
   const {
     data: { user },

@@ -67,6 +67,17 @@ export const cheerItems: SmiskiItem[] = [
     description:
       "SMISKI cheers loudly through a megaphone—GO GO GO!",
   },  
+  {
+    id: "cheer07",
+    name: "SecretSMISKI",
+    series: "Cheer Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/cheer_series/img_cheer07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {

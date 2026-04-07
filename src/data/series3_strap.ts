@@ -73,7 +73,7 @@ export const strapSeries3Items: SmiskiItem[] = [
     name: "Secret SMISKI",
     series: "Strap Series 3",
     type: "keychain",
-    isSecret: false,
+    isSecret: true,
     image: "/strap_series3/img_strap307.png",
     tags: ["???"],
     description:

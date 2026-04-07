@@ -67,6 +67,17 @@ export const toiletItems: SmiskiItem[] = [
     description:
       "SMISKI is trying very hard to hold it in… not much longer!",
   },
+  {
+    id: "toilet07",
+    name: "SecretSMISKI",
+    series: "Toilet Series",
+    type: "blind_box",
+    isSecret: true,
+    image: "/toilet_series/img_toilet07.png",
+    tags: ["???"],
+    description:
+      "",
+  },
 ];
 
 export function getSmiskiById(id: string): SmiskiItem | undefined {
