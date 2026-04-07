@@ -44,14 +44,12 @@ export function TradeCard({
   const detailHref = `/community/${trade.communityPostId}`;
 
   return (
-    <article
-      className={`${communityCardClass} flex flex-col overflow-hidden sm:flex-row`}
-    >
+    <article className={`${communityCardClass} flex h-full flex-col overflow-hidden`}>
       {trade.image && (
         <Link
           href={detailHref}
           aria-label={`View trade: ${reportTitle}`}
-          className="relative aspect-[16/10] w-full shrink-0 bg-gradient-to-br from-stone-100 to-smiski-light/35 sm:aspect-auto sm:h-auto sm:w-52 md:w-60"
+          className="relative aspect-[4/3] w-full shrink-0 bg-gradient-to-br from-stone-100 to-smiski-light/35"
         >
           <Image
             src={trade.image}
@@ -64,7 +62,7 @@ export function TradeCard({
         </Link>
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col gap-4 p-5 sm:p-6">
+      <div className="flex min-w-0 flex-1 flex-col gap-3 p-4 sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex min-w-0 flex-col">
             <p className="text-sm font-semibold uppercase tracking-wide text-stone-500">

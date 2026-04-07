@@ -235,6 +235,7 @@ export function CommunityClient({ seriesOptions }: Props) {
         const postComments = nextComments[row.post_id] ?? [];
         postComments.push({
           id: row.id,
+          userId: row.user_id,
           author: row.user_id === user?.id ? "you" : "collector",
           text: row.content,
           createdAt: coerceCreatedAt(row),
@@ -518,6 +519,7 @@ export function CommunityClient({ seriesOptions }: Props) {
 
       const comment: CommunityComment = {
         id: data.id,
+        userId: data.user_id,
         author: "you",
         text: data.content,
         createdAt: data.created_at,
@@ -526,6 +528,38 @@ export function CommunityClient({ seriesOptions }: Props) {
       setCommentsByPost((prev) => ({
         ...prev,
         [postId]: [...(prev[postId] ?? []), comment],
+      }));
+    },
+    [supabase],
+  );
+
+  const deleteComment = useCallback(
+    async (postId: string, commentId: string) => {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authError) {
+        console.error("Failed to read current user for comment delete", authError);
+        setFeedError(`Auth error while deleting comment: ${authError.message}`);
+        return;
+      }
+      if (!user) {
+        setFeedError("You need to sign in before deleting comments.");
+        return;
+      }
+
+      const { error } = await supabase.from("comments").delete().eq("id", commentId);
+      if (error) {
+        console.error("comments delete failed", error);
+        setFeedError(`Failed to delete comment: ${error.message}`);
+        return;
+      }
+
+      setCommentsByPost((prev) => ({
+        ...prev,
+        [postId]: (prev[postId] ?? []).filter((c) => c.id !== commentId),
       }));
     },
     [supabase],
@@ -715,28 +749,13 @@ export function CommunityClient({ seriesOptions }: Props) {
             Share, trade, and get inspired
           </h1>
           <p className="max-w-xl text-base leading-relaxed text-stone-500/90">
-            Feel free to show off and trade your Smiski collection here!
+            The world wanna see how you decorate your smiskis!
           </p>
         </div>
       </section>
 
       <section className={filterSectionClass} aria-label="Community sections">
-        <div className="flex flex-col gap-6 border-b border-smiski-light/80 pb-6 sm:flex-row sm:items-end sm:justify-between">
-          <div className="flex min-w-0 flex-1 flex-col gap-2">
-            <h2 className="text-lg font-semibold tracking-tight text-smiski-dark">Explore</h2>
-          </div>
-          <button
-            type="button"
-            className={communityPrimaryButtonClass}
-            onClick={() =>
-              openCreate(tab === "trade" ? "trade" : "showcase")
-            }
-          >
-            + Create post
-          </button>
-        </div>
-
-        <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap gap-2" role="tablist" aria-label="Community views">
             {(
               [
@@ -796,9 +815,9 @@ export function CommunityClient({ seriesOptions }: Props) {
               No trade posts yet. Be the first to list what you’re looking for.
             </p>
           ) : (
-            <ul className="flex flex-col gap-5">
+            <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {filteredTrades.map((trade) => (
-                <li key={trade.id}>
+                <li key={trade.id} className="min-w-0">
                   <TradeCard
                     trade={trade}
                     currentUserId={currentUserId}
@@ -835,10 +854,14 @@ export function CommunityClient({ seriesOptions }: Props) {
                     onAddComment={(text) => {
                       void addComment(post.id, text);
                     }}
+                    onDeleteComment={(commentId) => {
+                      void deleteComment(post.id, commentId);
+                    }}
                     currentUserId={currentUserId}
                     onDeletePost={deleteCommunityPost}
                     onReportPost={openReportModal}
                     isDeleting={deletingPostId === post.id}
+                    showComments={false}
                   />
                 </div>
               ))}
@@ -846,19 +869,6 @@ export function CommunityClient({ seriesOptions }: Props) {
           )}
         </section>
       )}
-
-      <section
-        className="flex flex-col items-start justify-between gap-4 rounded-[2rem] border border-dashed border-smiski-primary/35 bg-smiski-light/25 px-6 py-6 sm:flex-row sm:items-center"
-        aria-label="Tips"
-      >
-        <button
-          type="button"
-          className={communityGhostButtonClass}
-          onClick={() => openCreate("showcase")}
-        >
-          Share a showcase
-        </button>
-      </section>
 
       {modalOpen && (
         <CreatePostModal
@@ -882,6 +892,16 @@ export function CommunityClient({ seriesOptions }: Props) {
           onSubmit={submitReport}
         />
       )}
+
+      <button
+        type="button"
+        className={`${communityPrimaryButtonClass} fixed bottom-5 right-5 z-40 shadow-xl shadow-smiski-primary/35 sm:bottom-6 sm:right-6`}
+        onClick={() =>
+          openCreate(tab === "trade" ? "trade" : "showcase")
+        }
+      >
+        + Create post
+      </button>
     </div>
   );
 }

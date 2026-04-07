@@ -154,11 +154,7 @@ export function CatalogClient({
             </span>
           </h1>
           <p className="max-w-xl text-base leading-relaxed text-stone-500/90">
-            Browse every series, track what you own, and find the ones you’re missing.
-            <br />
-            <span className="text-stone-400 text-sm">
-              Smiskiのコレクションを全部見て、所有しているものを管理し、不足しているものを探しましょう。
-            </span>
+            Browse every series, track what you have, and find the ones you’re missing.
           </p>
           <div className="flex flex-wrap gap-2 pt-1">
             <span className="rounded-full border border-smiski-light bg-smiski-light/60 px-3 py-1 text-xs font-medium text-smiski-dark">

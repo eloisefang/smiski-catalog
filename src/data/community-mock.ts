@@ -20,6 +20,7 @@ export const MOCK_COMMUNITY_POSTS: CommunityPost[] = [
     comments: [
       {
         id: "c1",
+        userId: MOCK_USER,
         author: "mimi",
         text: "The shelf angle is perfect!",
         createdAt: "2026-03-19T09:01:00.000Z",

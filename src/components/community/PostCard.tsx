@@ -36,6 +36,8 @@ type Props = {
   onToggleLike: () => void;
   comments: CommunityComment[];
   onAddComment: (text: string) => void;
+  onDeleteComment?: (commentId: string) => void;
+  showComments?: boolean;
   currentUserId: string | null;
   onDeletePost?: (communityPostId: string) => void;
   onReportPost?: (communityPostId: string, title: string) => void;
@@ -50,6 +52,8 @@ export function PostCard({
   onToggleLike,
   comments,
   onAddComment,
+  onDeleteComment,
+  showComments = true,
   currentUserId,
   onDeletePost,
   onReportPost,
@@ -61,6 +65,11 @@ export function PostCard({
   const cover = post.images[0];
   const isMasonry = variant === "masonry";
   const isOwner = currentUserId !== null && post.userId === currentUserId;
+  function canDeleteComment(comment: CommunityComment) {
+    if (!currentUserId) return false;
+    return comment.userId === currentUserId || isOwner;
+  }
+
   const canReport =
     currentUserId !== null && !isOwner && onReportPost !== undefined;
   const detailHref = `/community/${post.id}`;
@@ -169,13 +178,7 @@ export function PostCard({
           </div>
         </div>
 
-        <p
-          className={`text-sm leading-relaxed text-stone-600 ${
-            isMasonry ? "line-clamp-4" : "line-clamp-3 sm:line-clamp-4"
-          }`}
-        >
-          {post.description}
-        </p>
+        {/* Description is shown on detail page only. */}
 
         <Link
           href={detailHref}
@@ -205,55 +208,68 @@ export function PostCard({
           </ul>
         )}
 
-        <div className="mt-auto border-t border-stone-100 pt-3">
-          <button
-            type="button"
-            onClick={() => setOpenComments((v) => !v)}
-            className="text-xs font-semibold text-smiski-dark underline-offset-4 hover:underline"
-          >
-            {openComments ? "Hide comments" : `Comments (${comments.length})`}
-          </button>
+        {showComments && (
+          <div className="mt-auto border-t border-stone-100 pt-3">
+            <button
+              type="button"
+              onClick={() => setOpenComments((v) => !v)}
+              className="text-xs font-semibold text-smiski-dark underline-offset-4 hover:underline"
+            >
+              {openComments ? "Hide comments" : `Comments (${comments.length})`}
+            </button>
 
-          {openComments && (
-            <div className="mt-3 flex flex-col gap-3">
-              <ul className="flex max-h-48 flex-col gap-2 overflow-y-auto pr-1 text-sm">
-                {comments.length === 0 ? (
-                  <li className="text-stone-500">No comments yet — say hi!</li>
-                ) : (
-                  comments.map((c) => (
-                    <li
-                      key={c.id}
-                      className="rounded-xl border border-smiski-light/80 bg-smiski-light/25 px-3 py-2"
-                    >
-                      <p className="text-xs font-semibold text-smiski-dark">
-                        {c.author}{" "}
-                        <span className="font-normal text-stone-400">
-                          · {formatPosted(c.createdAt)}
-                        </span>
-                      </p>
-                      <p className="mt-1 text-sm text-stone-700">{c.text}</p>
-                    </li>
-                  ))
-                )}
-              </ul>
-              <form onSubmit={submitComment} className="flex flex-col gap-2">
-                <label className="flex flex-col gap-1.5">
-                  <span className={communityMutedLabelClass}>Add a comment</span>
-                  <input
-                    value={draft}
-                    onChange={(e) => setDraft(e.target.value)}
-                    className={communityInputClass}
-                    placeholder="Nice setup!"
-                    maxLength={500}
-                  />
-                </label>
-                <button type="submit" className={communityPrimaryButtonClass}>
-                  Post
-                </button>
-              </form>
-            </div>
-          )}
-        </div>
+            {openComments && (
+              <div className="mt-3 flex flex-col gap-3">
+                <ul className="flex max-h-48 flex-col gap-2 overflow-y-auto pr-1 text-sm">
+                  {comments.length === 0 ? (
+                    <li className="text-stone-500">No comments yet — say hi!</li>
+                  ) : (
+                    comments.map((c) => (
+                      <li
+                        key={c.id}
+                        className="rounded-xl border border-smiski-light/80 bg-smiski-light/25 px-3 py-2"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="text-xs font-semibold text-smiski-dark">
+                            {c.author}{" "}
+                            <span className="font-normal text-stone-400">
+                              · {formatPosted(c.createdAt)}
+                            </span>
+                          </p>
+                          {canDeleteComment(c) && onDeleteComment && (
+                            <button
+                              type="button"
+                              onClick={() => onDeleteComment(c.id)}
+                              className="rounded-full border border-rose-200 bg-white px-2 py-0.5 text-[11px] font-semibold text-rose-700 transition hover:bg-rose-50"
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
+                        <p className="mt-1 text-sm text-stone-700">{c.text}</p>
+                      </li>
+                    ))
+                  )}
+                </ul>
+                <form onSubmit={submitComment} className="flex flex-col gap-2">
+                  <label className="flex flex-col gap-1.5">
+                    <span className={communityMutedLabelClass}>Add a comment</span>
+                    <input
+                      value={draft}
+                      onChange={(e) => setDraft(e.target.value)}
+                      className={communityInputClass}
+                      placeholder="Nice setup!"
+                      maxLength={500}
+                    />
+                  </label>
+                  <button type="submit" className={communityPrimaryButtonClass}>
+                    Post
+                  </button>
+                </form>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </article>
   );

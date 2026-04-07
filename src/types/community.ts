@@ -2,6 +2,7 @@ export type CommunityPostType = "trade" | "showcase";
 
 export type CommunityComment = {
   id: string;
+  userId: string;
   author: string;
   text: string;
   createdAt: string;
