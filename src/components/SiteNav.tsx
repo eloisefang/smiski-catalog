@@ -13,6 +13,7 @@ type Props = {
 export function SiteNav({ initialUser }: Props) {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isCommunity = pathname === "/community";
 
   return (
     <header className={navHeaderClass}>
@@ -48,6 +49,16 @@ export function SiteNav({ initialUser }: Props) {
               }`}
             >
               Catalog
+            </Link>
+            <Link
+              href="/community"
+              className={`rounded-full px-3 py-2 text-sm font-medium transition sm:px-4 ${navFocusRingClass} ${
+                isCommunity
+                  ? "bg-smiski-light/50 text-smiski-dark shadow-sm shadow-stone-300/25 ring-1 ring-smiski-primary/25"
+                  : "text-stone-600 hover:bg-smiski-light/40 hover:text-smiski-dark"
+              }`}
+            >
+              Community
             </Link>
           </nav>
         </div>
