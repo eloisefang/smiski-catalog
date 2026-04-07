@@ -69,7 +69,7 @@ export const movingItems: SmiskiItem[] = [
   },
   {
     id: "moving07",
-    name: "SecretSMISKI",
+    name: "Secret SMISKI",
     series: "Moving Series",
     type: "blind_box",
     isSecret: true,

@@ -69,7 +69,7 @@ export const sundayItems: SmiskiItem[] = [
   },  
   {
     id: "sunday07",
-    name: "SecretSMISKI",
+    name: "Secret SMISKI",
     series: "Sunday Series",
     type: "blind_box",
     isSecret: true,

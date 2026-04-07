@@ -69,7 +69,7 @@ export const toiletItems: SmiskiItem[] = [
   },
   {
     id: "toilet07",
-    name: "SecretSMISKI",
+    name: "Secret SMISKI",
     series: "Toilet Series",
     type: "blind_box",
     isSecret: true,

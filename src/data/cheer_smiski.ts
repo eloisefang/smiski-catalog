@@ -69,7 +69,7 @@ export const cheerItems: SmiskiItem[] = [
   },  
   {
     id: "cheer07",
-    name: "SecretSMISKI",
+    name: "Secret SMISKI",
     series: "Cheer Series",
     type: "blind_box",
     isSecret: true,

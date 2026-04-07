@@ -69,7 +69,7 @@ export const yogaItems: SmiskiItem[] = [
   },
   {
     id: "yoga07",
-    name: "SecretSMISKI",
+    name: "Secret SMISKI",
     series: "Yoga Series",
     type: "blind_box",
     isSecret: true,

@@ -75,7 +75,7 @@ export const birthdayItems: SmiskiItem[] = [
   },
   {
     id: "birthday07",
-    name: "SecretSMISKI",
+    name: "Secret SMISKI",
     series: "Birthday Series",
     type: "blind_box",
     isSecret: true,

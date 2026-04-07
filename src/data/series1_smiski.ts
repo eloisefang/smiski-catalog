@@ -69,7 +69,7 @@ export const series1Items: SmiskiItem[] = [
   },
   {
     id: "series107",
-    name: "SecretSMISKI",
+    name: "Secret SMISKI",
     series: "Series 1",
     type: "blind_box",
     isSecret: true,

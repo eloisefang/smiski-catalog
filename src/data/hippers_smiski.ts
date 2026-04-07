@@ -69,7 +69,7 @@ export const hippersItems: SmiskiItem[] = [
   },  
   {
     id: "hippers07",
-    name: "SecretSMISKI",
+    name: "Secret SMISKI",
     series: "Hippers Series",
     type: "hipper",
     isSecret: true,

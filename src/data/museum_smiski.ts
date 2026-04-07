@@ -69,7 +69,7 @@ export const museumItems: SmiskiItem[] = [
   },
   {
     id: "museum07",
-    name: "SecretSMISKI",
+    name: "Secret SMISKI",
     series: "Museum Series",
     type: "blind_box",
     isSecret: true,
@@ -79,3 +79,11 @@ export const museumItems: SmiskiItem[] = [
       "",
   },
 ];
+
+export function getSmiskiById(id: string): SmiskiItem | undefined {
+  return museumItems.find((item) => item.id === id);
+}
+
+export function getSmiskiSeries(): string[] {
+  return [...new Set(museumItems.map((item) => item.series))].sort();
+}
