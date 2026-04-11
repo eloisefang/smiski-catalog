@@ -6,13 +6,16 @@ import { useMemo, useState } from "react";
 import { CollectionSummary } from "@/src/components/collection/CollectionSummary";
 import { OwnedQuantityControls } from "@/src/components/collection/OwnedQuantityControls";
 import type { SmiskiItem } from "@/src/data/smiski";
+import { computeCollectionSummary } from "@/src/lib/collection/summary";
 import type { CollectionSummaryStats } from "@/src/lib/collection/types";
+import { useOwnedSmiskis } from "@/src/lib/collection/useOwnedSmiskis";
 import {
   catalogCardLinkClass,
   catalogPageShell,
   emptyStateClass,
   filterSectionClass,
   heroSectionClass,
+  ownedBadgeClass,
   secretBadgeClass,
 } from "@/src/lib/catalog-ui";
 import { formatSmiskiType } from "@/src/lib/smiski-label";
@@ -79,9 +82,23 @@ function matchesQuery(item: SmiskiItem, q: string): boolean {
   return haystack.includes(needle);
 }
 
-function FieldLabel({ children }: { children: React.ReactNode }) {
+function FieldLabel({
+  children,
+  weight = "semibold",
+}: {
+  children: React.ReactNode;
+  weight?: "semibold" | "normal" | "bold";
+}) {
   return (
-    <span className="text-xs font-semibold uppercase tracking-[0.1em] text-stone-500">
+    <span
+      className={
+        weight === "normal"
+          ? "text-xs font-normal uppercase tracking-[0.1em] text-stone-500"
+          : weight === "bold"
+            ? "text-xs font-bold uppercase tracking-[0.1em] text-stone-500"
+            : "text-xs font-semibold uppercase tracking-[0.1em] text-stone-500"
+      }
+    >
       {children}
     </span>
   );
@@ -90,25 +107,54 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
 export function CatalogClient({
   items,
   seriesOptions,
-  ownedBySmiskiId,
+  ownedBySmiskiId: initialOwnedBySmiskiId,
   isAuthenticated,
   collectionStats,
 }: Props) {
+  const { ownedIds, quantityBySmiskiId, loading: ownedLoading, isLoggedIn } =
+    useOwnedSmiskis({
+      initialQuantityBySmiskiId: initialOwnedBySmiskiId,
+      serverAuthenticated: isAuthenticated,
+    });
+
+  const catalogAuth = ownedLoading ? isAuthenticated : isLoggedIn;
+
   const [query, setQuery] = useState("");
   const [series, setSeries] = useState<string>("all");
   const [type, setType] = useState<"all" | SmiskiItem["type"]>("all");
-  const [secrets, setSecrets] = useState<"all" | "secret" | "regular">("all");
+  const [owned, setOwned] = useState<"all" | "owned">("all");
+
+  const ownedFilterActive = catalogAuth && owned === "owned";
+
+  const ownedIdSet = useMemo(() => new Set(ownedIds), [ownedIds]);
+
+  const displayStats = useMemo(() => {
+    if (!catalogAuth) return collectionStats;
+    const rows = Object.entries(quantityBySmiskiId).map(
+      ([smiski_id, quantity]) => ({ smiski_id, quantity }),
+    );
+    return computeCollectionSummary(rows, items.length);
+  }, [catalogAuth, quantityBySmiskiId, items.length, collectionStats]);
 
   const filtered = useMemo(() => {
     return items.filter((item) => {
       if (!matchesQuery(item, query)) return false;
       if (series !== "all" && item.series !== series) return false;
       if (type !== "all" && item.type !== type) return false;
-      if (secrets === "secret" && !item.isSecret) return false;
-      if (secrets === "regular" && item.isSecret) return false;
+      if (ownedFilterActive && !ownedIdSet.has(item.id)) return false;
       return true;
     });
-  }, [items, query, series, type, secrets]);
+  }, [
+    items,
+    query,
+    series,
+    type,
+    ownedFilterActive,
+    ownedIdSet,
+  ]);
+
+  const userHasNoOwned =
+    catalogAuth && ownedIds.length === 0 && !ownedLoading;
 
   const groupedBySeries = useMemo(
     () => groupItemsBySeries(filtered),
@@ -222,22 +268,35 @@ export function CatalogClient({
               </div>
             </label>
 
-            <label className="flex flex-col gap-2.5 sm:col-span-2 lg:col-span-1">
-              <FieldLabel>Secrets</FieldLabel>
+            <label className="flex flex-col gap-2.5">
+              <FieldLabel weight="bold">Owned</FieldLabel>
               <div className="relative">
                 <select
-                  value={secrets}
+                  value={catalogAuth ? owned : "all"}
                   onChange={(e) =>
-                    setSecrets(e.target.value as "all" | "secret" | "regular")
+                    setOwned(e.target.value as "all" | "owned")
                   }
                   className={selectClass}
+                  aria-describedby={
+                    !catalogAuth ? "catalog-owned-hint" : undefined
+                  }
                 >
-                  <option value="all">All items</option>
-                  <option value="secret">Secrets only</option>
-                  <option value="regular">Non-secret</option>
+                  <option value="all">All</option>
+                  <option value="owned" disabled={!catalogAuth}>
+                    Owned
+                  </option>
                 </select>
               </div>
+              {!catalogAuth ? (
+                <p
+                  id="catalog-owned-hint"
+                  className="text-xs font-normal leading-relaxed text-stone-500"
+                >
+                  Log in to view your owned Smiskis
+                </p>
+              ) : null}
             </label>
+
           </div>
 
           <p className="flex flex-wrap items-center gap-2 text-sm text-stone-500">
@@ -252,15 +311,24 @@ export function CatalogClient({
       </section>
 
       <CollectionSummary
-        stats={collectionStats}
-        isAuthenticated={isAuthenticated}
+        stats={displayStats}
+        isAuthenticated={catalogAuth}
       />
 
       {/* Catalog by series */}
       {filtered.length === 0 ? (
         <p className={emptyStateClass} role="status">
-          No matches yet. Try a gentler keyword or widen your filters—your Smiski
-          might just be peeking from behind something.
+          {ownedFilterActive && userHasNoOwned ? (
+            <>
+              You haven&apos;t added any owned Smiskis yet. Start collecting by
+              marking items you own.
+            </>
+          ) : (
+            <>
+              No matches yet. Try a gentler keyword or widen your filters—your
+              Smiski might just be peeking from behind something.
+            </>
+          )}
         </p>
       ) : (
         <div className="flex flex-col">
@@ -308,6 +376,13 @@ export function CatalogClient({
                             className="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-900/[0.06] via-transparent to-white/30 opacity-90 transition duration-300 group-hover:from-stone-900/[0.08]"
                             aria-hidden
                           />
+                          {catalogAuth && ownedIdSet.has(item.id) && (
+                            <span
+                              className={`absolute left-2 top-2 ${ownedBadgeClass}`}
+                            >
+                              Owned
+                            </span>
+                          )}
                           {item.isSecret && (
                             <span
                               className={`absolute right-2 top-2 ${secretBadgeClass}`}
@@ -348,8 +423,10 @@ export function CatalogClient({
                           </div>
                           <OwnedQuantityControls
                             smiskiId={item.id}
-                            initialQuantity={ownedBySmiskiId[item.id] ?? 0}
-                            isAuthenticated={isAuthenticated}
+                            initialQuantity={
+                              quantityBySmiskiId[item.id] ?? 0
+                            }
+                            isAuthenticated={catalogAuth}
                             compact
                           />
                         </div>

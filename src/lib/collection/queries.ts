@@ -1,5 +1,5 @@
 import { createClient } from "@/src/lib/supabase/server";
-import type { CollectionSummaryStats, UserSmiskiRow } from "./types";
+import type { UserSmiskiRow } from "./types";
 
 /** Loads collection rows for the signed-in user (RLS must match `userId`). */
 export async function fetchOwnedRowsForUser(
@@ -22,16 +22,6 @@ export function rowsToQuantityMap(rows: UserSmiskiRow[]): Record<string, number>
     if (row.quantity > 0) map[row.smiski_id] = row.quantity;
   }
   return map;
-}
-
-export function computeCollectionSummary(
-  rows: UserSmiskiRow[],
-  catalogTotal: number,
-): CollectionSummaryStats {
-  const positive = rows.filter((r) => r.quantity > 0);
-  const uniqueOwned = positive.length;
-  const totalFigures = positive.reduce((sum, r) => sum + r.quantity, 0);
-  return { uniqueOwned, totalFigures, catalogTotal };
 }
 
 export async function fetchQuantityForSmiski(

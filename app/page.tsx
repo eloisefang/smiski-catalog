@@ -3,18 +3,14 @@ import {
   SMISKI_ITEMS,
   getSmiskiSeries,
 } from "@/src/data/smiski";
-import {
-  computeCollectionSummary,
-  fetchOwnedRowsForUser,
-  rowsToQuantityMap,
-} from "@/src/lib/collection/queries";
+import { fetchOwnedRowsForUser, rowsToQuantityMap } from "@/src/lib/collection/queries";
+import { computeCollectionSummary } from "@/src/lib/collection/summary";
 import { createClient } from "@/src/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const series = getSmiskiSeries();
-  console.log(SMISKI_ITEMS);
   const supabase = await createClient();
   const {
     data: { user },

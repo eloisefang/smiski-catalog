@@ -21,6 +21,10 @@ export const navFocusRingClass =
 export const secretBadgeClass =
   "rounded-full border border-smiski-primary/40 bg-smiski-light px-3 py-1 text-xs font-semibold uppercase tracking-wide text-smiski-dark shadow-sm";
 
+/** Owned figure — catalog grid (optional badge) */
+export const ownedBadgeClass =
+  "rounded-full border border-smiski-primary/35 bg-white/95 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-smiski-dark shadow-sm backdrop-blur-[2px]";
+
 /** Product card link: single hover shadow (no duplicate utilities) */
 export const catalogCardLinkClass =
   "group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-stone-200/80 bg-white shadow-md shadow-stone-300/20 transition duration-300 ease-out motion-safe:hover:-translate-y-1 hover:border-smiski-primary/45 hover:shadow-lg hover:shadow-stone-300/35";
