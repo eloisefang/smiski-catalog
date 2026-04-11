@@ -202,14 +202,6 @@ export function CatalogClient({
           <p className="max-w-xl text-base leading-relaxed text-stone-500/90">
             Browse every series, track what you have, and find the ones you’re missing.
           </p>
-          <div className="flex flex-wrap gap-2 pt-1">
-            <span className="rounded-full border border-smiski-light bg-smiski-light/60 px-3 py-1 text-xs font-medium text-smiski-dark">
-              {items.length} entries
-            </span>
-            <span className="rounded-full border border-smiski-light bg-smiski-light/60 px-3 py-1 text-xs font-medium text-smiski-dark">
-              {seriesOptions.length} series
-            </span>
-          </div>
         </div>
       </section>
 

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { TradePost } from "@/src/types/community";
-import { communityCardClass } from "@/src/lib/community-ui";
+import { tradeCardClass } from "@/src/lib/community-ui";
 
 function formatPosted(iso: string) {
   try {
@@ -44,12 +44,12 @@ export function TradeCard({
   const detailHref = `/community/${trade.communityPostId}`;
 
   return (
-    <article className={`${communityCardClass} flex h-full flex-col overflow-hidden`}>
+    <article className={`${tradeCardClass} flex h-full flex-col overflow-hidden`}>
       {trade.image && (
         <Link
           href={detailHref}
           aria-label={`View trade: ${reportTitle}`}
-          className="relative aspect-[4/3] w-full shrink-0 bg-gradient-to-br from-stone-100 to-smiski-light/35"
+          className="relative h-52 w-full shrink-0 bg-gradient-to-br from-stone-100 to-smiski-light/35 sm:h-56"
         >
           <Image
             src={trade.image}
@@ -57,12 +57,12 @@ export function TradeCard({
             fill
             unoptimized
             className="object-cover"
-            sizes="(max-width: 640px) 100vw, 240px"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         </Link>
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col gap-3 p-4 sm:p-5">
+      <div className="flex min-w-0 flex-1 flex-col gap-4 p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex min-w-0 flex-col">
             <p className="text-sm font-semibold uppercase tracking-wide text-stone-500">
@@ -108,8 +108,8 @@ export function TradeCard({
           </div>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border border-smiski-light/90 bg-smiski-light/35 p-4 shadow-sm">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-smiski-light/90 bg-smiski-light/35 p-5 shadow-sm">
             <p className="text-[11px] font-bold uppercase tracking-wide text-smiski-dark">
               Looking for
             </p>
@@ -117,7 +117,7 @@ export function TradeCard({
               {trade.lookingFor}
             </p>
           </div>
-          <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
+          <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
             <p className="text-[11px] font-bold uppercase tracking-wide text-stone-500">
               Offering
             </p>

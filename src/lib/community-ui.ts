@@ -9,6 +9,10 @@ export const communityHeroClass =
 export const communityCardClass =
   "overflow-hidden rounded-2xl border border-stone-200/80 bg-white shadow-md shadow-stone-300/20 transition duration-300 ease-out motion-safe:hover:-translate-y-0.5 hover:border-smiski-primary/40 hover:shadow-lg hover:shadow-stone-300/35";
 
+/** Trade tab list cards only — larger presence; do not use for showcase masonry. */
+export const tradeCardClass =
+  "overflow-hidden rounded-[1.75rem] border border-stone-200/80 bg-white shadow-lg shadow-stone-300/25 transition duration-200 ease-out motion-safe:hover:scale-[1.02] hover:border-smiski-primary/45 hover:shadow-xl hover:shadow-stone-300/40";
+
 export const communityMutedLabelClass =
   "text-xs font-semibold uppercase tracking-[0.1em] text-stone-500";
 

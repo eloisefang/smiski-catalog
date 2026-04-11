@@ -809,13 +809,13 @@ export function CommunityClient({ seriesOptions }: Props) {
       )}
 
       {!loadingFeed && tab === "trade" && (
-        <section aria-label="Trade posts">
+        <section className="mt-8" aria-label="Trade posts">
           {filteredTrades.length === 0 ? (
             <p className={emptyStateClass} role="status">
               No trade posts yet. Be the first to list what you’re looking for.
             </p>
           ) : (
-            <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2">
               {filteredTrades.map((trade) => (
                 <li key={trade.id} className="min-w-0">
                   <TradeCard
