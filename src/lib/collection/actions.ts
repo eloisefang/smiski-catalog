@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getSmiskiById } from "@/src/data/smiski";
-import { createClient } from "@/src/lib/supabase/server";
+import { getSmiskiById } from "@/data/smiski";
+import { createClient } from "@/lib/supabase/server";
 
 export type AdjustQuantityResult =
   | { ok: true; quantity: number }

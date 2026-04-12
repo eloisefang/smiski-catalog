@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { catalogPageShell, heroSectionClass } from "@/src/lib/catalog-ui";
+import { catalogPageShell, heroSectionClass } from "@/lib/catalog-ui";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -70,7 +70,7 @@ export default function AboutPage() {
           <article>
             <h2 className="text-xl font-semibold tracking-tight text-smiski-dark">👩🏻‍💻 About me!</h2>
             <p className="mt-3 text-sm leading-relaxed text-stone-600 sm:text-base">
-              A SMISKI collector and developer who's passionate about building fun and simple tools for the Smiski community.
+              A SMISKI collector and developer who is passionate about building fun and simple tools for the Smiski community.
             </p>
             <div className="mt-4 grid max-w-xl gap-2 rounded-2xl border border-smiski-light/80 bg-smiski-light/20 p-4 text-sm text-stone-700 sm:text-base">
               <p className="font-semibold text-smiski-dark">Find me on:</p>

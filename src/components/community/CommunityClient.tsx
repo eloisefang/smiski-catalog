@@ -6,15 +6,15 @@ import {
   communityPageShell,
   communityPrimaryButtonClass,
   communityTabButtonClass,
-} from "@/src/lib/community-ui";
-import { emptyStateClass, filterSectionClass } from "@/src/lib/catalog-ui";
-import type { CommunityComment, CommunityPost, TradePost } from "@/src/types/community";
-import { createClient as createSupabaseClient } from "@/src/lib/supabase/client";
-import { CreatePostModal, type CreatePayload } from "@/src/components/community/CreatePostModal";
-import { PostCard } from "@/src/components/community/PostCard";
-import { ReportPostModal, type ReportReason } from "@/src/components/community/ReportPostModal";
-import { TradeCard } from "@/src/components/community/TradeCard";
-import { extractCommunityImageStoragePath } from "@/src/lib/community/storage";
+} from "@/lib/community-ui";
+import { emptyStateClass, filterSectionClass } from "@/lib/catalog-ui";
+import type { CommunityComment, CommunityPost, TradePost } from "@/types/community";
+import { createClient as createSupabaseClient } from "@/lib/supabase/client";
+import { CreatePostModal, type CreatePayload } from "@/components/community/CreatePostModal";
+import { PostCard } from "@/components/community/PostCard";
+import { ReportPostModal, type ReportReason } from "@/components/community/ReportPostModal";
+import { TradeCard } from "@/components/community/TradeCard";
+import { extractCommunityImageStoragePath } from "@/lib/community/storage";
 
 type Tab = "trade" | "showcase";
 

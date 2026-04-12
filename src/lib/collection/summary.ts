@@ -1,4 +1,4 @@
-import type { CollectionSummaryStats, UserSmiskiRow } from "./types";
+import type { CollectionSummaryStats, UserSmiskiRow } from "@/types/collection";
 
 export function computeCollectionSummary(
   rows: UserSmiskiRow[],

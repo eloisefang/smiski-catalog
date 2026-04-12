@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { DetailCommentsSection } from "@/src/components/community/DetailCommentsSection";
-import { createClient } from "@/src/lib/supabase/server";
-import { communityPageShell, communityHeroClass, communityCardClass } from "@/src/lib/community-ui";
+import { DetailCommentsSection } from "@/components/community/DetailCommentsSection";
+import { createClient } from "@/lib/supabase/server";
+import { communityPageShell, communityHeroClass, communityCardClass } from "@/lib/community-ui";
 
 function creatorLabel(userId: string, viewerId: string | null) {
   if (viewerId && userId === viewerId) return "You";

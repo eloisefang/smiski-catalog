@@ -4,7 +4,7 @@ export type UserSmiskiRow = {
 };
 
 export type CollectionSummaryStats = {
-  /** Distinct Smiski with quantity &gt; 0 */
+  /** Distinct Smiski with quantity > 0 */
   uniqueOwned: number;
   /** Sum of all quantities */
   totalFigures: number;

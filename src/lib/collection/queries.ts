@@ -1,5 +1,5 @@
-import { createClient } from "@/src/lib/supabase/server";
-import type { UserSmiskiRow } from "./types";
+import { createClient } from "@/lib/supabase/server";
+import type { UserSmiskiRow } from "@/types/collection";
 
 /** Loads collection rows for the signed-in user (RLS must match `userId`). */
 export async function fetchOwnedRowsForUser(

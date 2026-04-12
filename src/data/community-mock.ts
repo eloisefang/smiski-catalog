@@ -1,4 +1,4 @@
-import type { CommunityPost, TradePost } from "@/src/types/community";
+import type { CommunityPost, TradePost } from "@/types/community";
 
 const ph = (w: number, h: number, text: string) =>
   `https://placehold.co/${w}x${h}/E2F0D9/3E9A0B/png?text=${encodeURIComponent(text)}`;

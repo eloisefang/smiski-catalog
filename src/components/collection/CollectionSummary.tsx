@@ -1,4 +1,4 @@
-import type { CollectionSummaryStats } from "@/src/lib/collection/types";
+import type { CollectionSummaryStats } from "@/types/collection";
 
 type Props = {
   stats: CollectionSummaryStats;

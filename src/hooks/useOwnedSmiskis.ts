@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createClient } from "@/src/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 export type UseOwnedSmiskisOptions = {
   /** SSR snapshot of quantities for the signed-in user. */

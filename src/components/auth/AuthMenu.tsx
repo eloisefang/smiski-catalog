@@ -2,8 +2,8 @@
 
 import type { User } from "@supabase/supabase-js";
 import { useState } from "react";
-import { signOutAction } from "@/src/lib/auth/actions";
-import { createClient } from "@/src/lib/supabase/client";
+import { signOutAction } from "@/lib/auth/actions";
+import { createClient } from "@/lib/supabase/client";
 
 type Props = {
   initialUser: User | null;

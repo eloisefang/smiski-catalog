@@ -1,11 +1,11 @@
-import { CatalogClient } from "@/src/components/CatalogClient";
+import { CatalogClient } from "@/components/CatalogClient";
 import {
   SMISKI_ITEMS,
   getSmiskiSeries,
-} from "@/src/data/smiski";
-import { fetchOwnedRowsForUser, rowsToQuantityMap } from "@/src/lib/collection/queries";
-import { computeCollectionSummary } from "@/src/lib/collection/summary";
-import { createClient } from "@/src/lib/supabase/server";
+} from "@/data/smiski";
+import { fetchOwnedRowsForUser, rowsToQuantityMap } from "@/lib/collection/queries";
+import { computeCollectionSummary } from "@/lib/collection/summary";
+import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 

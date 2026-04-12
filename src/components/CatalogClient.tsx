@@ -3,12 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { CollectionSummary } from "@/src/components/collection/CollectionSummary";
-import { OwnedQuantityControls } from "@/src/components/collection/OwnedQuantityControls";
-import type { SmiskiItem } from "@/src/data/smiski";
-import { computeCollectionSummary } from "@/src/lib/collection/summary";
-import type { CollectionSummaryStats } from "@/src/lib/collection/types";
-import { useOwnedSmiskis } from "@/src/lib/collection/useOwnedSmiskis";
+import { CollectionSummary } from "@/components/collection/CollectionSummary";
+import { OwnedQuantityControls } from "@/components/collection/OwnedQuantityControls";
+import type { SmiskiItem } from "@/data/smiski";
+import { computeCollectionSummary } from "@/lib/collection/summary";
+import type { CollectionSummaryStats } from "@/types/collection";
+import { useOwnedSmiskis } from "@/hooks/useOwnedSmiskis";
 import {
   catalogCardLinkClass,
   catalogPageShell,
@@ -17,8 +17,8 @@ import {
   heroSectionClass,
   ownedBadgeClass,
   secretBadgeClass,
-} from "@/src/lib/catalog-ui";
-import { formatSmiskiType } from "@/src/lib/smiski-label";
+} from "@/lib/catalog-ui";
+import { formatSmiskiType } from "@/lib/smiski-label";
 
 type Props = {
   items: SmiskiItem[];

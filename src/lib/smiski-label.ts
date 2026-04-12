@@ -1,4 +1,4 @@
-import type { SmiskiItem } from "@/src/data/smiski";
+import type { SmiskiItem } from "@/data/smiski";
 
 export function formatSmiskiType(type: SmiskiItem["type"]): string {
   switch (type) {

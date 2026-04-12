@@ -1,19 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { OwnedQuantityControls } from "@/src/components/collection/OwnedQuantityControls";
+import { OwnedQuantityControls } from "@/components/collection/OwnedQuantityControls";
 import {
   SMISKI_ITEMS,
   getSmiskiById,
-} from "@/src/data/smiski";
+} from "@/data/smiski";
 import {
   detailArticleClass,
   detailPageShell,
   secretBadgeClass,
-} from "@/src/lib/catalog-ui";
-import { fetchQuantityForSmiski } from "@/src/lib/collection/queries";
-import { formatSmiskiType } from "@/src/lib/smiski-label";
-import { createClient } from "@/src/lib/supabase/server";
+} from "@/lib/catalog-ui";
+import { fetchQuantityForSmiski } from "@/lib/collection/queries";
+import { formatSmiskiType } from "@/lib/smiski-label";
+import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";

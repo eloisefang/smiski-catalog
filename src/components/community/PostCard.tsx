@@ -3,13 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import type { CommunityComment, CommunityPost } from "@/src/types/community";
+import type { CommunityComment, CommunityPost } from "@/types/community";
 import {
   communityCardClass,
   communityInputClass,
   communityMutedLabelClass,
   communityPrimaryButtonClass,
-} from "@/src/lib/community-ui";
+} from "@/lib/community-ui";
 
 function formatPosted(iso: string) {
   try {

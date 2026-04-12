@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { SiteNav } from "@/src/components/SiteNav";
-import { createClient } from "@/src/lib/supabase/server";
+import { SiteNav } from "@/components/SiteNav";
+import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
 const geistSans = Geist({

@@ -6,7 +6,7 @@ import {
   communityInputClass,
   communityMutedLabelClass,
   communityPrimaryButtonClass,
-} from "@/src/lib/community-ui";
+} from "@/lib/community-ui";
 
 export const REPORT_REASONS = [
   { value: "inappropriate_image", label: "Inappropriate image" },

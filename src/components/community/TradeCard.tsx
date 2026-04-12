@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { TradePost } from "@/src/types/community";
-import { tradeCardClass } from "@/src/lib/community-ui";
+import type { TradePost } from "@/types/community";
+import { tradeCardClass } from "@/lib/community-ui";
 
 function formatPosted(iso: string) {
   try {
