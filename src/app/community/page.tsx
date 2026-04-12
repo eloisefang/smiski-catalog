@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CommunityClient } from "@/components/community/CommunityClient";
+import { CommunityClient } from "@/features/community/components/CommunityClient";
 import { getSmiskiSeries } from "@/data/smiski";
 
 export const metadata: Metadata = {

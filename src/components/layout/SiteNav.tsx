@@ -3,8 +3,8 @@
 import type { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AuthMenu } from "@/components/auth/AuthMenu";
-import { navFocusRingClass, navHeaderClass } from "@/lib/catalog-ui";
+import { AuthMenu } from "@/components/layout/AuthMenu";
+import { navFocusRingClass, navHeaderClass } from "@/components/layout/nav-styles";
 
 type Props = {
   initialUser: User | null;

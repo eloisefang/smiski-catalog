@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { catalogPageShell, heroSectionClass } from "@/lib/catalog-ui";
+import { catalogPageShell, heroSectionClass } from "@/features/catalog/utils/catalog-ui";
 
 export const metadata: Metadata = {
   title: "About Us",

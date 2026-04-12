@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { SiteNav } from "@/components/SiteNav";
+import { SiteNav } from "@/components/layout/SiteNav";
 import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 

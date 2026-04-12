@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useId } from "react";
-import { communityGhostButtonClass } from "@/lib/community-ui";
+import { communityGhostButtonClass } from "@/features/community/utils/community-ui";
 
 type Props = {
   /** Preview URLs (`URL.createObjectURL` or remote). Parent revokes blob URLs on remove. */

@@ -6,8 +6,8 @@ import {
   communityInputClass,
   communityMutedLabelClass,
   communityPrimaryButtonClass,
-} from "@/lib/community-ui";
-import { ImageUpload } from "@/components/community/ImageUpload";
+} from "@/features/community/utils/community-ui";
+import { ImageUpload } from "@/features/community/components/ImageUpload";
 
 export type CreatePayload =
   | {

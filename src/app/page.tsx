@@ -1,10 +1,10 @@
-import { CatalogClient } from "@/components/CatalogClient";
+import { CatalogClient } from "@/features/catalog/components/CatalogClient";
 import {
   SMISKI_ITEMS,
   getSmiskiSeries,
 } from "@/data/smiski";
-import { fetchOwnedRowsForUser, rowsToQuantityMap } from "@/lib/collection/queries";
-import { computeCollectionSummary } from "@/lib/collection/summary";
+import { fetchOwnedRowsForUser, rowsToQuantityMap } from "@/features/owned/queries";
+import { computeCollectionSummary } from "@/features/owned/summary";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";

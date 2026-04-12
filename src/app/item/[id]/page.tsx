@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { OwnedQuantityControls } from "@/components/collection/OwnedQuantityControls";
+import { OwnedQuantityControls } from "@/features/owned/components/OwnedQuantityControls";
 import {
   SMISKI_ITEMS,
   getSmiskiById,
@@ -10,9 +10,9 @@ import {
   detailArticleClass,
   detailPageShell,
   secretBadgeClass,
-} from "@/lib/catalog-ui";
-import { fetchQuantityForSmiski } from "@/lib/collection/queries";
-import { formatSmiskiType } from "@/lib/smiski-label";
+} from "@/features/catalog/utils/catalog-ui";
+import { fetchQuantityForSmiski } from "@/features/owned/queries";
+import { formatSmiskiType } from "@/features/catalog/utils/smiski-label";
 import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 

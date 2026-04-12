@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { adjustOwnedQuantity } from "@/lib/collection/actions";
+import { adjustOwnedQuantity } from "@/features/owned/actions";
 
 type Props = {
   smiskiId: string;

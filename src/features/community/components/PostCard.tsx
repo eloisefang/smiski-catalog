@@ -9,7 +9,7 @@ import {
   communityInputClass,
   communityMutedLabelClass,
   communityPrimaryButtonClass,
-} from "@/lib/community-ui";
+} from "@/features/community/utils/community-ui";
 
 function formatPosted(iso: string) {
   try {

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { TradePost } from "@/types/community";
-import { tradeCardClass } from "@/lib/community-ui";
+import { tradeCardClass } from "@/features/community/utils/community-ui";
 
 function formatPosted(iso: string) {
   try {

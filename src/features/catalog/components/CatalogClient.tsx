@@ -2,13 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { CollectionSummary } from "@/components/collection/CollectionSummary";
-import { OwnedQuantityControls } from "@/components/collection/OwnedQuantityControls";
+import { useMemo } from "react";
+import { FieldLabel } from "@/components/ui/field-label";
 import type { SmiskiItem } from "@/data/smiski";
-import { computeCollectionSummary } from "@/lib/collection/summary";
-import type { CollectionSummaryStats } from "@/types/collection";
-import { useOwnedSmiskis } from "@/hooks/useOwnedSmiskis";
+import { useCatalogFilters } from "@/features/catalog/hooks/useCatalogFilters";
 import {
   catalogCardLinkClass,
   catalogPageShell,
@@ -17,8 +14,18 @@ import {
   heroSectionClass,
   ownedBadgeClass,
   secretBadgeClass,
-} from "@/lib/catalog-ui";
-import { formatSmiskiType } from "@/lib/smiski-label";
+} from "@/features/catalog/utils/catalog-ui";
+import {
+  catalogGridClass,
+  catalogSearchInputClass,
+  catalogSelectClass,
+} from "@/features/catalog/utils/catalog-form-classes";
+import { formatSmiskiType } from "@/features/catalog/utils/smiski-label";
+import { CollectionSummary } from "@/features/owned/components/CollectionSummary";
+import { OwnedQuantityControls } from "@/features/owned/components/OwnedQuantityControls";
+import { computeCollectionSummary } from "@/features/owned/summary";
+import { useOwnedSmiskis } from "@/features/owned/hooks/useOwnedSmiskis";
+import type { CollectionSummaryStats } from "@/types/collection";
 
 type Props = {
   items: SmiskiItem[];
@@ -27,82 +34,6 @@ type Props = {
   isAuthenticated: boolean;
   collectionStats: CollectionSummaryStats;
 };
-
-/** Group catalog items by their `series` string. */
-function groupItemsBySeries(items: SmiskiItem[]): Record<string, SmiskiItem[]> {
-  return items.reduce<Record<string, SmiskiItem[]>>((acc, item) => {
-    const key = item.series;
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(item);
-    return acc;
-  }, {});
-}
-
-/** Order section keys to match filter dropdown order, then alphabetically for any extras. */
-function sortSeriesKeys(
-  grouped: Record<string, SmiskiItem[]>,
-  preferredOrder: string[],
-): string[] {
-  const keys = Object.keys(grouped);
-  const rank = new Map(preferredOrder.map((name, i) => [name, i]));
-  return keys.sort((a, b) => {
-    const ra = rank.has(a) ? rank.get(a)! : Number.MAX_SAFE_INTEGER;
-    const rb = rank.has(b) ? rank.get(b)! : Number.MAX_SAFE_INTEGER;
-    if (ra !== rb) return ra - rb;
-    return a.localeCompare(b, undefined, { sensitivity: "base" });
-  });
-}
-
-/* Stable white field: typed text stays dark; placeholder lighter; focus = border + ring only */
-const inputClass =
-  "w-full rounded-2xl border border-stone-200 bg-white px-4 py-3.5 text-sm font-medium text-stone-700 shadow-sm shadow-stone-200/50 outline-none transition placeholder:font-normal placeholder:text-stone-400 caret-smiski-primary focus:border-smiski-primary focus:ring-2 focus:ring-smiski-primary/20 focus:ring-offset-0";
-
-const selectChevron =
-  "bg-[url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237BB049'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\")] bg-[length:1rem] bg-[position:right_0.75rem_center] bg-no-repeat";
-
-const selectClass = `w-full cursor-pointer appearance-none rounded-2xl border border-stone-200 bg-white py-3.5 pl-4 pr-10 text-sm font-medium text-stone-700 shadow-sm shadow-stone-200/50 outline-none transition focus:border-smiski-primary focus:ring-2 focus:ring-smiski-primary/20 focus:ring-offset-0 [&>option]:bg-white [&>option]:text-stone-700 ${selectChevron}`;
-
-const catalogGridClass =
-  "grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 md:gap-4";
-
-function matchesQuery(item: SmiskiItem, q: string): boolean {
-  if (!q.trim()) return true;
-  const needle = q.trim().toLowerCase();
-  const haystack = [
-    item.name,
-    item.series,
-    item.description,
-    ...item.tags,
-    item.type,
-    formatSmiskiType(item.type).toLowerCase(),
-    item.isSecret ? "secret" : "",
-  ]
-    .join(" ")
-    .toLowerCase();
-  return haystack.includes(needle);
-}
-
-function FieldLabel({
-  children,
-  weight = "semibold",
-}: {
-  children: React.ReactNode;
-  weight?: "semibold" | "normal" | "bold";
-}) {
-  return (
-    <span
-      className={
-        weight === "normal"
-          ? "text-xs font-normal uppercase tracking-[0.1em] text-stone-500"
-          : weight === "bold"
-            ? "text-xs font-bold uppercase tracking-[0.1em] text-stone-500"
-            : "text-xs font-semibold uppercase tracking-[0.1em] text-stone-500"
-      }
-    >
-      {children}
-    </span>
-  );
-}
 
 export function CatalogClient({
   items,
@@ -119,12 +50,21 @@ export function CatalogClient({
 
   const catalogAuth = ownedLoading ? isAuthenticated : isLoggedIn;
 
-  const [query, setQuery] = useState("");
-  const [series, setSeries] = useState<string>("all");
-  const [type, setType] = useState<"all" | SmiskiItem["type"]>("all");
-  const [owned, setOwned] = useState<"all" | "owned">("all");
-
-  const ownedFilterActive = catalogAuth && owned === "owned";
+  const {
+    query,
+    setQuery,
+    series,
+    setSeries,
+    type,
+    setType,
+    setOwned,
+    filtered,
+    ownedFilterActive,
+    userHasNoOwned,
+    groupedBySeries,
+    seriesSectionOrder,
+    catalogOwnedSelectValue,
+  } = useCatalogFilters(items, seriesOptions, catalogAuth, ownedIds, ownedLoading);
 
   const ownedIdSet = useMemo(() => new Set(ownedIds), [ownedIds]);
 
@@ -135,36 +75,6 @@ export function CatalogClient({
     );
     return computeCollectionSummary(rows, items.length);
   }, [catalogAuth, quantityBySmiskiId, items.length, collectionStats]);
-
-  const filtered = useMemo(() => {
-    return items.filter((item) => {
-      if (!matchesQuery(item, query)) return false;
-      if (series !== "all" && item.series !== series) return false;
-      if (type !== "all" && item.type !== type) return false;
-      if (ownedFilterActive && !ownedIdSet.has(item.id)) return false;
-      return true;
-    });
-  }, [
-    items,
-    query,
-    series,
-    type,
-    ownedFilterActive,
-    ownedIdSet,
-  ]);
-
-  const userHasNoOwned =
-    catalogAuth && ownedIds.length === 0 && !ownedLoading;
-
-  const groupedBySeries = useMemo(
-    () => groupItemsBySeries(filtered),
-    [filtered],
-  );
-
-  const seriesSectionOrder = useMemo(
-    () => sortSeriesKeys(groupedBySeries, seriesOptions),
-    [groupedBySeries, seriesOptions],
-  );
 
   return (
     <div className={catalogPageShell}>
@@ -218,7 +128,7 @@ export function CatalogClient({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Try “bathroom”, “keychain”, or “secret”…"
-              className={inputClass}
+              className={catalogSearchInputClass}
               autoComplete="off"
             />
           </label>
@@ -230,7 +140,7 @@ export function CatalogClient({
                 <select
                   value={series}
                   onChange={(e) => setSeries(e.target.value)}
-                  className={selectClass}
+                  className={catalogSelectClass}
                 >
                   <option value="all">All series</option>
                   {seriesOptions.map((s) => (
@@ -250,7 +160,7 @@ export function CatalogClient({
                   onChange={(e) =>
                     setType(e.target.value as "all" | SmiskiItem["type"])
                   }
-                  className={selectClass}
+                  className={catalogSelectClass}
                 >
                   <option value="all">All types</option>
                   <option value="blind_box">Blind box</option>
@@ -264,11 +174,11 @@ export function CatalogClient({
               <FieldLabel weight="bold">Owned</FieldLabel>
               <div className="relative">
                 <select
-                  value={catalogAuth ? owned : "all"}
+                  value={catalogOwnedSelectValue}
                   onChange={(e) =>
                     setOwned(e.target.value as "all" | "owned")
                   }
-                  className={selectClass}
+                  className={catalogSelectClass}
                   aria-describedby={
                     !catalogAuth ? "catalog-owned-hint" : undefined
                   }
