@@ -2,15 +2,11 @@
 
 A fan-made Smiski catalog, collection tracker, and community platform designed for collectors to explore, organize, and trade their Smiski figures.
 
----
-
 ## Overview
 
 Smiski Dex is a full-stack web application that allows users to browse a complete catalog of Smiski figures, track which ones they own, and interact with a community through trading and showcase posts.
 
 The goal of this project is to combine a clean, minimal user interface with practical full-stack features such as authentication, database integration, and user-generated content.
-
----
 
 ## Features
 
@@ -38,8 +34,6 @@ The goal of this project is to combine a clean, minimal user interface with prac
   * User login via Supabase (OAuth)
   * Personalized data (owned items, posts)
 
----
-
 ## Tech Stack
 
 * **Frontend**
@@ -56,9 +50,7 @@ The goal of this project is to combine a clean, minimal user interface with prac
 * **Deployment**
 
   * Vercel
-
----
-
+ 
 ## Architecture
 
 This project follows a hybrid structure that separates static and dynamic data:
@@ -76,8 +68,6 @@ This project follows a hybrid structure that separates static and dynamic data:
 
 The frontend directly communicates with Supabase (Backend-as-a-Service), avoiding the need for a custom API server.
 
----
-
 ## Key Learnings
 
 During development, I worked through several real-world challenges:
@@ -89,8 +79,6 @@ During development, I worked through several real-world challenges:
 * Handling image uploads and validation
 * Resolving Next.js hydration issues
 
----
-
 ## Future Improvements
 
 * User profiles and collection stats
@@ -98,9 +86,7 @@ During development, I worked through several real-world challenges:
 * Comment and like system
 * Admin moderation tools
 * Moving catalog data to a database for scalability
-
----
-
+  
 ## Disclaimer
 
 This is a fan-made project and is not affiliated with or endorsed by the official Smiski brand or its creators.
