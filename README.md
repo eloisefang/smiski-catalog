@@ -93,10 +93,6 @@ This is a fan-made project and is not affiliated with or endorsed by the officia
 
 All character designs, names, and related assets belong to their respective owners. This project is for educational and portfolio purposes only.
 
----
-
 ## Author
 
 Developed by Eloise Fang
-
----
